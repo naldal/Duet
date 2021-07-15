@@ -19,6 +19,7 @@
 		DAB85639269DC5220020E6C0 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB85638269DC5220020E6C0 /* VideoPlayerViewController.swift */; };
 		DAB8563B269DC5470020E6C0 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB8563A269DC5470020E6C0 /* NewConversationViewController.swift */; };
 		DAB8563D269DC59C0020E6C0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB8563C269DC59C0020E6C0 /* ProfileViewController.swift */; };
+		DAFB1631269FE4CA00B6AE3B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFB1630269FE4CA00B6AE3B /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		DAB85638269DC5220020E6C0 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		DAB8563A269DC5470020E6C0 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		DAB8563C269DC59C0020E6C0 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		DAFB1630269FE4CA00B6AE3B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 			children = (
 				DAB85616269DC0B10020E6C0 /* AppDelegate.swift */,
 				DAB85618269DC0B10020E6C0 /* SceneDelegate.swift */,
+				DAFB1630269FE4CA00B6AE3B /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				DAB8563B269DC5470020E6C0 /* NewConversationViewController.swift in Sources */,
 				DAB8561B269DC0B10020E6C0 /* ConversationsViewController.swift in Sources */,
 				DAB85639269DC5220020E6C0 /* VideoPlayerViewController.swift in Sources */,
+				DAFB1631269FE4CA00B6AE3B /* Extensions.swift in Sources */,
 				DAB85617269DC0B10020E6C0 /* AppDelegate.swift in Sources */,
 				DAB8563D269DC59C0020E6C0 /* ProfileViewController.swift in Sources */,
 				DAB85619269DC0B10020E6C0 /* SceneDelegate.swift in Sources */,
