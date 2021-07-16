@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		67BEBC1F283F70CD9A747AC0 /* Pods_Duet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5AE4614D3A961EF4C4176C1 /* Pods_Duet.framework */; };
+		DA4BFEEF26A1D8700004D03A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA4BFEEE26A1D8700004D03A /* GoogleService-Info.plist */; };
 		DAB85617269DC0B10020E6C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB85616269DC0B10020E6C0 /* AppDelegate.swift */; };
 		DAB85619269DC0B10020E6C0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB85618269DC0B10020E6C0 /* SceneDelegate.swift */; };
 		DAB8561B269DC0B10020E6C0 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB8561A269DC0B10020E6C0 /* ConversationsViewController.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		788C7307943D0E779925D5F6 /* Pods-Duet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Duet.release.xcconfig"; path = "Target Support Files/Pods-Duet/Pods-Duet.release.xcconfig"; sourceTree = "<group>"; };
+		DA4BFEEE26A1D8700004D03A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DAB85613269DC0B10020E6C0 /* Duet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Duet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAB85616269DC0B10020E6C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DAB85618269DC0B10020E6C0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -38,6 +42,8 @@
 		DAB8563A269DC5470020E6C0 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		DAB8563C269DC59C0020E6C0 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		DAFB1630269FE4CA00B6AE3B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		E5AE4614D3A961EF4C4176C1 /* Pods_Duet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Duet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4980087E7D009BD62B6250F /* Pods-Duet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Duet.debug.xcconfig"; path = "Target Support Files/Pods-Duet/Pods-Duet.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,12 +51,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67BEBC1F283F70CD9A747AC0 /* Pods_Duet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6622C9F4FED9976DF21D85BD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E5AE4614D3A961EF4C4176C1 /* Pods_Duet.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DA82A7DB269F068600C64FF0 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -63,8 +78,11 @@
 		DAB8560A269DC0B10020E6C0 = {
 			isa = PBXGroup;
 			children = (
+				DA4BFEEE26A1D8700004D03A /* GoogleService-Info.plist */,
 				DAB85615269DC0B10020E6C0 /* Duet */,
 				DAB85614269DC0B10020E6C0 /* Products */,
+				DBA72847AE610015E6D52C97 /* Pods */,
+				6622C9F4FED9976DF21D85BD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,6 +162,15 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
+		DBA72847AE610015E6D52C97 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F4980087E7D009BD62B6250F /* Pods-Duet.debug.xcconfig */,
+				788C7307943D0E779925D5F6 /* Pods-Duet.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -151,9 +178,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DAB85627269DC0B30020E6C0 /* Build configuration list for PBXNativeTarget "Duet" */;
 			buildPhases = (
+				8B56259ABDED4E6ED7764D61 /* [CP] Check Pods Manifest.lock */,
 				DAB8560F269DC0B10020E6C0 /* Sources */,
 				DAB85610269DC0B10020E6C0 /* Frameworks */,
 				DAB85611269DC0B10020E6C0 /* Resources */,
+				376AE1C78BC0EE5B46FD7AE2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -202,12 +231,55 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAB85623269DC0B30020E6C0 /* LaunchScreen.storyboard in Resources */,
+				DA4BFEEF26A1D8700004D03A /* GoogleService-Info.plist in Resources */,
 				DAB85620269DC0B30020E6C0 /* Assets.xcassets in Resources */,
 				DAB8561E269DC0B10020E6C0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		376AE1C78BC0EE5B46FD7AE2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Duet/Pods-Duet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Duet/Pods-Duet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Duet/Pods-Duet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8B56259ABDED4E6ED7764D61 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Duet-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DAB8560F269DC0B10020E6C0 /* Sources */ = {
@@ -367,6 +439,7 @@
 		};
 		DAB85628269DC0B30020E6C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4980087E7D009BD62B6250F /* Pods-Duet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -386,6 +459,7 @@
 		};
 		DAB85629269DC0B30020E6C0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 788C7307943D0E779925D5F6 /* Pods-Duet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
