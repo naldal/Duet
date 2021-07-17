@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		67BEBC1F283F70CD9A747AC0 /* Pods_Duet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5AE4614D3A961EF4C4176C1 /* Pods_Duet.framework */; };
+		DA0F912626A32E48004D6D10 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0F912526A32E48004D6D10 /* DatabaseManager.swift */; };
 		DA4BFEEF26A1D8700004D03A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA4BFEEE26A1D8700004D03A /* GoogleService-Info.plist */; };
 		DAB85617269DC0B10020E6C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB85616269DC0B10020E6C0 /* AppDelegate.swift */; };
 		DAB85619269DC0B10020E6C0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB85618269DC0B10020E6C0 /* SceneDelegate.swift */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		788C7307943D0E779925D5F6 /* Pods-Duet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Duet.release.xcconfig"; path = "Target Support Files/Pods-Duet/Pods-Duet.release.xcconfig"; sourceTree = "<group>"; };
+		DA0F912526A32E48004D6D10 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		DA4BFEEE26A1D8700004D03A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DAB85613269DC0B10020E6C0 /* Duet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Duet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAB85616269DC0B10020E6C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				DAB85616269DC0B10020E6C0 /* AppDelegate.swift */,
 				DAB85618269DC0B10020E6C0 /* SceneDelegate.swift */,
 				DAFB1630269FE4CA00B6AE3B /* Extensions.swift */,
+				DA0F912526A32E48004D6D10 /* DatabaseManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAB85632269DC4E20020E6C0 /* LoginViewController.swift in Sources */,
+				DA0F912626A32E48004D6D10 /* DatabaseManager.swift in Sources */,
 				DAB85634269DC4EF0020E6C0 /* RegisterViewController.swift in Sources */,
 				DAB8563B269DC5470020E6C0 /* NewConversationViewController.swift in Sources */,
 				DAB8561B269DC0B10020E6C0 /* ConversationsViewController.swift in Sources */,
