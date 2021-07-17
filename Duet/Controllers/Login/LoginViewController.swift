@@ -127,8 +127,7 @@ class LoginViewController: UIViewController {
             return
         }
         
-        // firebase login
-        // once this succeeds, dismiss this naviation, by calling dismiss
+        // firebase login with email and password. if login is success, Firebase auth().currentUser will not be nil any longer.
         Firebase.Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let strongSelf = self else {
                 return
@@ -139,6 +138,8 @@ class LoginViewController: UIViewController {
             }
             let user = result.user
             print("Logged In User: \(user)")
+            
+            // once this succeeds, dismiss this naviation, by calling dismiss
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
