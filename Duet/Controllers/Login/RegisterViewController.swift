@@ -191,27 +191,31 @@ class RegisterViewController: UIViewController {
             return
         }
         
-        // firebase register
+        // check user email has registered already, and then execute completion handler.
         DatabaseManager.shared.userExists(with: email, completion: { [weak self] exists in
             guard let strongSelf = self else {
                 return
             }
             
+            // when exists is False.
             guard !exists else {
                 strongSelf.alertUserLoginError(message: "Looks like a user account for that email address already exists.")
                 return
             }
             
+            // create user information first, then result or error will be returned.
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
                 guard authResult != nil, error == nil else {
                     print("Error creating user")
                     return
                 }
                 
+                // if result is good to go, user information should be inserted in firebase database.
                 DatabaseManager.shared.insertUser(with: DuetUser(firstName: firstName,
                                                                  lastName: lastName,
                                                                  emailAddress: email))
                 
+                // go back to ConversationViewController.
                 strongSelf.dismiss(animated: true, completion: nil)
             }
         })

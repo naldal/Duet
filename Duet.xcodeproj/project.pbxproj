@@ -113,9 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				DAB8561A269DC0B10020E6C0 /* ConversationsViewController.swift */,
-				DAB8563C269DC59C0020E6C0 /* ProfileViewController.swift */,
 				DA82A7DB269F068600C64FF0 /* Login */,
 				DAB85635269DC50B0020E6C0 /* PhotoViewerViewController.swift */,
+				DAB8563C269DC59C0020E6C0 /* ProfileViewController.swift */,
 				DAB85638269DC5220020E6C0 /* VideoPlayerViewController.swift */,
 				DAB8563A269DC5470020E6C0 /* NewConversationViewController.swift */,
 			);
