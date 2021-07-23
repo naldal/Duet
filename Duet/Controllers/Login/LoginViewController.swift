@@ -8,8 +8,11 @@
 import UIKit
 import Firebase
 import FBSDKLoginKit
+import JGProgressHUD
 
 class LoginViewController: UIViewController {
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -80,6 +83,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = "Log in"
         view.backgroundColor = .white
         
@@ -133,7 +137,6 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTapLoginButton() {
-        
         emailField.resignFirstResponder()
         passwordField.resignFirstResponder()
         
@@ -142,11 +145,18 @@ class LoginViewController: UIViewController {
             return
         }
         
+        spinner.show(in: view)
+        
         // firebase login with email and password. if login is success, Firebase auth().currentUser will not be nil any longer.
         Firebase.Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let strongSelf = self else {
                 return
             }
+            
+            DispatchQueue.main.async {
+                strongSelf.spinner.dismiss()
+            }
+            
             guard let result = authResult, error == nil else {
                 print("Failed to log in user with email: \(email)")
                 return

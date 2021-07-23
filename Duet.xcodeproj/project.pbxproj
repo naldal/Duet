@@ -10,6 +10,8 @@
 		67BEBC1F283F70CD9A747AC0 /* Pods_Duet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5AE4614D3A961EF4C4176C1 /* Pods_Duet.framework */; };
 		DA0F912626A32E48004D6D10 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0F912526A32E48004D6D10 /* DatabaseManager.swift */; };
 		DA4BFEEF26A1D8700004D03A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA4BFEEE26A1D8700004D03A /* GoogleService-Info.plist */; };
+		DA7B4F9D26AA98B000B78A10 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7B4F9C26AA98B000B78A10 /* ChatViewController.swift */; };
+		DA84777C26A706D100ACBAD6 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA84777B26A706D100ACBAD6 /* credentials.plist */; };
 		DAB85617269DC0B10020E6C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB85616269DC0B10020E6C0 /* AppDelegate.swift */; };
 		DAB85619269DC0B10020E6C0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB85618269DC0B10020E6C0 /* SceneDelegate.swift */; };
 		DAB8561B269DC0B10020E6C0 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB8561A269DC0B10020E6C0 /* ConversationsViewController.swift */; };
@@ -29,6 +31,8 @@
 		788C7307943D0E779925D5F6 /* Pods-Duet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Duet.release.xcconfig"; path = "Target Support Files/Pods-Duet/Pods-Duet.release.xcconfig"; sourceTree = "<group>"; };
 		DA0F912526A32E48004D6D10 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		DA4BFEEE26A1D8700004D03A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DA7B4F9C26AA98B000B78A10 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		DA84777B26A706D100ACBAD6 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		DAB85613269DC0B10020E6C0 /* Duet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Duet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAB85616269DC0B10020E6C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DAB85618269DC0B10020E6C0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +84,7 @@
 		DAB8560A269DC0B10020E6C0 = {
 			isa = PBXGroup;
 			children = (
+				DA84777B26A706D100ACBAD6 /* credentials.plist */,
 				DA4BFEEE26A1D8700004D03A /* GoogleService-Info.plist */,
 				DAB85615269DC0B10020E6C0 /* Duet */,
 				DAB85614269DC0B10020E6C0 /* Products */,
@@ -118,6 +123,7 @@
 				DAB8563C269DC59C0020E6C0 /* ProfileViewController.swift */,
 				DAB85638269DC5220020E6C0 /* VideoPlayerViewController.swift */,
 				DAB8563A269DC5470020E6C0 /* NewConversationViewController.swift */,
+				DA7B4F9C26AA98B000B78A10 /* ChatViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -235,6 +241,7 @@
 			files = (
 				DAB85623269DC0B30020E6C0 /* LaunchScreen.storyboard in Resources */,
 				DA4BFEEF26A1D8700004D03A /* GoogleService-Info.plist in Resources */,
+				DA84777C26A706D100ACBAD6 /* credentials.plist in Resources */,
 				DAB85620269DC0B30020E6C0 /* Assets.xcassets in Resources */,
 				DAB8561E269DC0B10020E6C0 /* Main.storyboard in Resources */,
 			);
@@ -299,6 +306,7 @@
 				DAB85617269DC0B10020E6C0 /* AppDelegate.swift in Sources */,
 				DAB8563D269DC59C0020E6C0 /* ProfileViewController.swift in Sources */,
 				DAB85619269DC0B10020E6C0 /* SceneDelegate.swift in Sources */,
+				DA7B4F9D26AA98B000B78A10 /* ChatViewController.swift in Sources */,
 				DAB85636269DC50B0020E6C0 /* PhotoViewerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
