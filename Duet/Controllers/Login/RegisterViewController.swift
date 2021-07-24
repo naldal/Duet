@@ -117,10 +117,10 @@ class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Log in"
+        title = "Register"
         view.backgroundColor = .white
         
-        registerButton.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        registerButton.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
         
         emailField.delegate = self
         passwordField.delegate = self
@@ -177,7 +177,7 @@ class RegisterViewController: UIViewController {
                                       height: 52)
     }
     
-    @objc private func didTapLoginButton() {
+    @objc private func didTapRegisterButton() {
         emailField.resignFirstResponder()
         passwordField.resignFirstResponder()
         
@@ -201,6 +201,7 @@ class RegisterViewController: UIViewController {
             guard let strongSelf = self else {
                 return
             }
+            
             DispatchQueue.main.async {
                 strongSelf.spinner.dismiss()
             }
@@ -219,10 +220,28 @@ class RegisterViewController: UIViewController {
                 }
                 
                 // if result is good to go, user information should be inserted in firebase database.
-                DatabaseManager.shared.insertUser(with: DuetUser(firstName: firstName,
-                                                                 lastName: lastName,
-                                                                 emailAddress: email))
-                
+                let duetUser = DuetUser(firstName: firstName,
+                                        lastName: lastName,
+                                        emailAddress: email)
+                DatabaseManager.shared.insertUser(with: duetUser) { success in
+                    if success {
+                        // upload image
+                        guard let image = strongSelf.imageView.image,
+                              let data = image.pngData() else {
+                            return
+                        }
+                        let fileName = duetUser.profilePictureFileName
+                        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { result in
+                            switch result {
+                            case .success(let downloadUrl):
+                                UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                print(downloadUrl)
+                            case .failure(let error):
+                                print("Storage manager error: \(error)")
+                            }
+                        }
+                    }
+                }
                 // go back to ConversationViewController.
                 strongSelf.dismiss(animated: true, completion: nil)
             }
@@ -236,16 +255,7 @@ class RegisterViewController: UIViewController {
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
         present(alert, animated: true)
-        
     }
-    
-    
-    @objc private func didTapRegister() {
-        let vc = RegisterViewController()
-        vc.title = "Create Account"
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
 }
 
 extension RegisterViewController: UITextFieldDelegate {
@@ -253,7 +263,7 @@ extension RegisterViewController: UITextFieldDelegate {
         if textField == emailField {
             passwordField.becomeFirstResponder()
         } else if textField == passwordField {
-            didTapLoginButton()
+            didTapRegisterButton()
         }
         return true
     }
@@ -298,7 +308,7 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
         }
         self.imageView.image = selectedImage
     }
-    // when user choose photo
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }

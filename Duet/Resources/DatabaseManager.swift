@@ -25,7 +25,7 @@ extension DatabaseManager {
         
         // To check email is exist, find safeEmail in firebase database, and then check nil for snapshot.
         database.child(safeEmail).observeSingleEvent(of: .value) { snapshot in
-            // if snapshot is not nil, then completion closure argument will be allocated "false"
+            // if snapshot is nil, then completion closure argument will be allocated "false"
             guard snapshot.value as? String != nil else {
                 completion(false)
                 return
@@ -37,15 +37,22 @@ extension DatabaseManager {
     }
     
     /// Insert new user to database
-    public func insertUser(with user: DuetUser) {
+    public func insertUser(with user: DuetUser, completion: @escaping (Bool) -> Void) {
         database.child(user.safeEmail).setValue([
             "first_name": user.firstName,
             "last_name": user.lastName
-        ])
+        ]) { error, reference in
+            guard error == nil else {
+                print("failed to write to database")
+                completion(false)
+                return
+            }
+            completion(true)
+        }
     }
 }
 
-struct DuetUser{
+struct DuetUser {
     let firstName: String
     let lastName: String
     let emailAddress: String
@@ -56,5 +63,8 @@ struct DuetUser{
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
         return safeEmail
     }
-//    let profilePictureUrl : String
+    
+    var profilePictureFileName : String {
+        return "\(safeEmail)_profile_picture.png"
+    }
 }

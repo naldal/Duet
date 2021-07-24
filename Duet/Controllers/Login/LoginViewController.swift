@@ -209,7 +209,7 @@ extension LoginViewController: LoginButtonDelegate {
         }
         
         let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me",
-                                                         parameters: ["fields": "email, name"],
+                                                         parameters: ["fields": "email, first_name, last_name, picture.type(large)"],
                                                          tokenString: token,
                                                          version: nil,
                                                          httpMethod: .get)
@@ -222,30 +222,49 @@ extension LoginViewController: LoginButtonDelegate {
                 print("Failed to make facebook graph request")
                 return
             }
+            
             print("\(result)")
-            guard let userName = result["name"] as? String,
-                  let email = result["email"] as? String else {
+            
+            guard let firstName = result["first_name"] as? String,
+                  let lastName = result["last_name"] as? String,
+                  let email = result["email"] as? String,
+                  let picture = result["picture"] as? [String:Any?],
+                  let data = picture["data"] as? [String:Any?],
+                  let pictureUrl = data["url"] as? String else {
                 print("Failed to get email and name from fb result")
                 return
-            }
-            
-            let nameComponents = userName.components(separatedBy: " ")
-            let firstName: String?
-            let lastName: String?
-            
-            if nameComponents.count >= 2  {
-                firstName = nameComponents[0]
-                lastName = nameComponents[1]
-            } else {
-                let korean = userName.map({$0})
-                firstName = String(korean[0])
-                lastName = String(korean[1...])
             }
             
             
             DatabaseManager.shared.userExists(with: email) { exists in
                 if !exists {
-                    DatabaseManager.shared.insertUser(with: DuetUser(firstName: firstName!, lastName: lastName!, emailAddress: email))
+                    let duetUser = DuetUser(firstName: firstName, lastName: lastName, emailAddress: email)
+                    DatabaseManager.shared.insertUser(with: duetUser) { success in
+                        if success {
+                            guard let url = URL(string: pictureUrl) else {
+                                return
+                            }
+                            URLSession.shared.dataTask(with: url) { data, _, _ in
+                                guard let data = data else {
+                                    return
+                                }
+                                
+                                print("got data from Facebook")
+                                
+                                let fileName = duetUser.profilePictureFileName
+                                // upload image
+                                StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { result in
+                                    switch result {
+                                    case .success(let downloadUrl):
+                                        UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                        print(downloadUrl)
+                                    case .failure(let error):
+                                        print("Storage manager error: \(error)")
+                                    }
+                                }
+                            }.resume()
+                        }
+                    }
                 }
             }
             
