@@ -162,6 +162,9 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
+            
+            UserDefaults.standard.set(email, forKey: "email")
+            
             print("Logged In User: \(user)")
             
             // once this succeeds, dismiss this naviation, by calling dismiss
@@ -244,12 +247,15 @@ extension LoginViewController: LoginButtonDelegate {
                             guard let url = URL(string: pictureUrl) else {
                                 return
                             }
+                            
                             URLSession.shared.dataTask(with: url) { data, _, _ in
                                 guard let data = data else {
                                     return
                                 }
                                 
                                 print("got data from Facebook")
+                                
+                                UserDefaults.standard.set(email, forKey: "email")
                                 
                                 let fileName = duetUser.profilePictureFileName
                                 // upload image
