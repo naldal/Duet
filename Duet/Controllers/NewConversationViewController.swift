@@ -10,6 +10,8 @@ import JGProgressHUD
 
 class NewConversationViewController: UIViewController {
     
+    public var completion: (([String:String]) -> (Void))?
+    
     private let spinner = JGProgressHUD(style: .dark)
 
     private var users = [[String: String]]()
@@ -36,7 +38,6 @@ class NewConversationViewController: UIViewController {
         label.isHidden = true
         label.text = "No Results"
         label.textAlignment = .center
-        label.backgroundColor = .systemGray
         label.textColor = .gray
         label.font = .systemFont(ofSize: 21, weight: .medium)
         return label
@@ -44,16 +45,16 @@ class NewConversationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(noResultsLabel)
         view.addSubview(tableView)
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        searchBar.delegate = self
         view.backgroundColor = .white
         navigationController?.navigationBar.topItem?.titleView = searchBar
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(dismissSelf))
+        
+        view.addSubview(noResultsLabel)
+        tableView.delegate = self
+        tableView.dataSource = self
+        searchBar.delegate = self
+        
         searchBar.becomeFirstResponder()
     }
     
@@ -80,13 +81,19 @@ extension NewConversationViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        print(results)
         cell.textLabel?.text = results[indexPath.row]["name"]
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        // start conversation
+        let targetUserData = results[indexPath.row]
+        
+        dismiss(animated: true, completion: { [weak self] in
+            self?.completion?(targetUserData)
+        })
     }
     
 }
