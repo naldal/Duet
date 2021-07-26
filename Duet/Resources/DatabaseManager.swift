@@ -27,15 +27,22 @@ extension DatabaseManager {
         var safeEmail = email.replacingOccurrences(of: ".", with: "-")
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
         
-        // To check email is exist, find safeEmail in firebase database, and then check nil for snapshot.
-        database.child(safeEmail).observeSingleEvent(of: .value) { snapshot in
-            // if snapshot is nil, then completion closure argument will be allocated "false"
+        
+        database.child(safeEmail).observeSingleEvent(of: .value) { [weak self] snapshot in
             guard snapshot.value as? String != nil else {
+                self?.database.child("users").observeSingleEvent(of: .value) { userSnapshot in
+                    if let userSnap = userSnapshot.value as? [[String:String]] {
+                        let userEmails = userSnap.map{($0["email"] ?? "") as String}.filter{
+                            return $0 == safeEmail
+                        }
+                        completion(!userEmails.isEmpty)
+                        return
+                    }
+                }
                 completion(false)
                 return
             }
             
-            // completion closure argument will be allocated "true"
             completion(true)
         }
     }
@@ -46,6 +53,7 @@ extension DatabaseManager {
             "first_name": user.firstName,
             "last_name": user.lastName
         ]) { error, reference in
+            
             guard error == nil else {
                 print("failed to write to database")
                 completion(false)
@@ -54,7 +62,7 @@ extension DatabaseManager {
             
             self.database.child("users").observeSingleEvent(of: .value) { snapshot in
                 if var usersCollection = snapshot.value as? [[String:String]] {
-                    // append to user dictionary
+                    
                     usersCollection.append([
                         "name": user.firstName + " " + user.lastName,
                         "email": user.safeEmail
@@ -67,8 +75,9 @@ extension DatabaseManager {
                         }
                         completion(true)
                     }
+                    
                 } else {
-                    // create that array
+                    
                     let newCollection: [[String:String]] = [
                         [
                             "name": user.firstName + " " + user.lastName,

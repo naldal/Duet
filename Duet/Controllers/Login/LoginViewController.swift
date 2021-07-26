@@ -240,6 +240,7 @@ extension LoginViewController: LoginButtonDelegate {
             
             
             DatabaseManager.shared.userExists(with: email) { exists in
+                print(exists)
                 if !exists {
                     let duetUser = DuetUser(firstName: firstName, lastName: lastName, emailAddress: email)
                     DatabaseManager.shared.insertUser(with: duetUser) { success in
