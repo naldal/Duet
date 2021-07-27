@@ -27,23 +27,29 @@ extension DatabaseManager {
         var safeEmail = email.replacingOccurrences(of: ".", with: "-")
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
         
-        
-        database.child(safeEmail).observeSingleEvent(of: .value) { [weak self] snapshot in
+        // To check email is exist, find safeEmail in firebase database, and then check nil for snapshot.
+        database.child(safeEmail).observeSingleEvent(of: .value) { snapshot in
             guard snapshot.value as? String != nil else {
-                self?.database.child("users").observeSingleEvent(of: .value) { userSnapshot in
-                    if let userSnap = userSnapshot.value as? [[String:String]] {
-                        let userEmails = userSnap.map{($0["email"] ?? "") as String}.filter{
-                            return $0 == safeEmail
-                        }
-                        completion(!userEmails.isEmpty)
-                        return
-                    }
-                }
                 completion(false)
                 return
             }
-            
+            // completion closure argument will be allocated "true"
             completion(true)
+            
+        }
+    }
+    
+    public func userExistsInUsers(with safeEmail: String, completion: @escaping (Bool) -> Void) {
+        database.child("users").observeSingleEvent(of: .value) { snapshot in
+            if let shots = snapshot.value as? [[String : String]] {
+                let userExists = shots.filter{$0["email"]! == safeEmail}
+                if userExists.isEmpty {
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+                return
+            }
         }
     }
     
@@ -144,7 +150,7 @@ extension DatabaseManager {
      */
     
     /// Create a new conversation with target user email and first message sent
-    public func createNewConversation(with receiver: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
+    public func createNewConversation(with receiver: String, name: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
         guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String else {
             return
         }
@@ -191,6 +197,7 @@ extension DatabaseManager {
             let newConversationsData:[String:Any] = [
                 "id": conversationId,
                 "receiver": receiver,
+                "name": name,
                 "latest_message": [
                     "data": dateString,
                     "message": message,
@@ -208,7 +215,8 @@ extension DatabaseManager {
                         completion(false)
                         return
                     }
-                    self?.finishCreatingConversation(conversationID: conversationId,
+                    self?.finishCreatingConversation(name: name,
+                                                     conversationID: conversationId,
                                                      firstMessage: firstMessage,
                                                      completion: completion)
                 }
@@ -225,7 +233,8 @@ extension DatabaseManager {
                         return
                     }
                     
-                    self?.finishCreatingConversation(conversationID: conversationId,
+                    self?.finishCreatingConversation(name: name,
+                                                     conversationID: conversationId,
                                                      firstMessage: firstMessage,
                                                      completion: completion)
                     completion(true)
@@ -234,7 +243,7 @@ extension DatabaseManager {
         }
     }
     
-    private func finishCreatingConversation(conversationID: String, firstMessage: Message, completion: @escaping (Bool)->Void) {
+    private func finishCreatingConversation(name:String, conversationID: String, firstMessage: Message, completion: @escaping (Bool)->Void) {
         
         //        {
         //             "id": String,
@@ -286,7 +295,8 @@ extension DatabaseManager {
             "content": message,
             "date": dateString,
             "sender_email": currentUserEmail,
-            "isRead" : false
+            "isRead" : false,
+            "name": name
         ]
         let value:[String:Any] = [
             "messages":[
@@ -304,8 +314,34 @@ extension DatabaseManager {
     }
     
     /// Fetches and returns all conversations for the user with passed in email
-    public func getAllConversations(for email: String, completion: @escaping (Result<String, Error>) -> Void) {
-        
+    public func getAllConversations(for email: String, completion: @escaping (Result<[Conversation], Error>) -> Void) {
+        print("email!!: \(email)")
+        database.child("\(email)/conversations").observe(.value) { snapshot in
+            guard let value = snapshot.value as? [[String:Any]] else {
+                completion(.failure(DatabaseError.failedToFecth))
+                return
+            }
+            
+            let conversations: [Conversation] = value.compactMap { dictionary in
+                guard let conversationId = dictionary["id"] as? String,
+                      let name = dictionary["name"] as? String,
+                      let receiver = dictionary["receiver"] as? String,
+                      let latestMessage = dictionary["latest_message"] as? [String: Any],
+                      let date = latestMessage["data"] as? String,
+                      let message = latestMessage["message"] as? String,
+                      let isRead = latestMessage["is_read"] as? Bool else {
+                    return nil
+                }
+                
+                let latestMessageObject = LatestMessage(date: date,
+                                                        text: message,
+                                                        isRead: isRead)
+                return Conversation(id: conversationId, name: name, receiverEmail: receiver, laatestMessage: latestMessageObject)
+            }
+            
+            completion(.success(conversations))
+        }
+
     }
     
     

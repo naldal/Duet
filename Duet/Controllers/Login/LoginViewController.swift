@@ -240,36 +240,38 @@ extension LoginViewController: LoginButtonDelegate {
             
             
             DatabaseManager.shared.userExists(with: email) { exists in
-                print(exists)
                 if !exists {
                     let duetUser = DuetUser(firstName: firstName, lastName: lastName, emailAddress: email)
-                    DatabaseManager.shared.insertUser(with: duetUser) { success in
-                        if success {
-                            guard let url = URL(string: pictureUrl) else {
-                                return
-                            }
-                            
-                            URLSession.shared.dataTask(with: url) { data, _, _ in
-                                guard let data = data else {
-                                    return
-                                }
-                                
-                                print("got data from Facebook")
-                                
-                                UserDefaults.standard.set(email, forKey: "email")
-                                
-                                let fileName = duetUser.profilePictureFileName
-                                // upload image
-                                StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { result in
-                                    switch result {
-                                    case .success(let downloadUrl):
-                                        UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
-                                        print(downloadUrl)
-                                    case .failure(let error):
-                                        print("Storage manager error: \(error)")
+                    DatabaseManager.shared.userExistsInUsers(with: duetUser.safeEmail) { result in
+                        if !result {
+                            DatabaseManager.shared.insertUser(with: duetUser) { success in
+                                if success {
+                                    guard let url = URL(string: pictureUrl) else {
+                                        return
                                     }
+                                    
+                                    URLSession.shared.dataTask(with: url) { data, _, _ in
+                                        guard let data = data else {
+                                            return
+                                        }
+                                        print("got data from Facebook")
+                                        
+                                        UserDefaults.standard.set(email, forKey: "email")
+                                        
+                                        let fileName = duetUser.profilePictureFileName
+                                        // upload image
+                                        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { result in
+                                            switch result {
+                                            case .success(let downloadUrl):
+                                                UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                                print(downloadUrl)
+                                            case .failure(let error):
+                                                print("Storage manager error: \(error)")
+                                            }
+                                        }
+                                    }.resume()
                                 }
-                            }.resume()
+                            }
                         }
                     }
                 }
@@ -290,6 +292,9 @@ extension LoginViewController: LoginButtonDelegate {
                 }
                 
                 print("Successfully logged user in")
+                DispatchQueue.main.async {
+                    sleep(2)
+                }
                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
             }
         }
