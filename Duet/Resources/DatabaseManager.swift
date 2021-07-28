@@ -359,13 +359,6 @@ extension DatabaseManager {
 
 
 
-
-
-
-
-
-
-
 struct DuetUser {
     let firstName: String
     let lastName: String
