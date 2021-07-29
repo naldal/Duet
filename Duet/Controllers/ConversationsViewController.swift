@@ -43,7 +43,7 @@ class ConversationsViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(didTapComposeButton))
         view.addSubview(tableView)
         view.addSubview(noConversationLabel)
-        fetchConversations()
+
         setupTableView()
         fetchConversations()
         startListeningForConversations()
@@ -69,6 +69,7 @@ class ConversationsViewController: UIViewController {
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
                 }
+                
             case .failure(let error):
                 print("failed to get convos: \(error)")
             }
@@ -88,7 +89,7 @@ class ConversationsViewController: UIViewController {
         guard let name = result["name"], let email = result["email"] else {
             return
         }
-        let vc = ChatViewController(with: email)
+        let vc = ChatViewController(with: email, id: nil)
         vc.isNewConversation = true
         vc.title = name
         vc.navigationItem.largeTitleDisplayMode = .never
@@ -124,15 +125,12 @@ class ConversationsViewController: UIViewController {
     
     private func fetchConversations() {
         tableView.isHidden = false
+        tableView.reloadData()
     }
     
 }
 
-extension ConversationsViewController: UITableViewDelegate {
-    
-}
-
-extension ConversationsViewController: UITableViewDataSource {
+extension ConversationsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return conversations.count
     }
@@ -150,7 +148,7 @@ extension ConversationsViewController: UITableViewDataSource {
         
         let model = conversations[indexPath.row]
         
-        let vc = ChatViewController(with: model.receiverEmail)
+        let vc = ChatViewController(with: model.receiverEmail, id: model.id)
         vc.title = model.name
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

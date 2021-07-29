@@ -105,7 +105,7 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
         scrollView.addSubview(facebookLoginButton)
-
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -130,10 +130,10 @@ class LoginViewController: UIViewController {
                                    width: scrollView.width-60,
                                    height: 52)
         facebookLoginButton.frame = CGRect(x: 30,
-                                   y: loginButton.bottom+10,
-                                   width: scrollView.width-60,
-                                   height: 52)
-
+                                           y: loginButton.bottom+10,
+                                           width: scrollView.width-60,
+                                           height: 52)
+        
     }
     
     @objc private func didTapLoginButton() {
@@ -162,8 +162,25 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
+            let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+            DatabaseManager.shared.getDataFor(path: safeEmail) { result in
+                switch result {
+                case .success(let data):
+                    guard let userData = data as? [String:Any],
+                          let firstName = userData["first_name"],
+                          let lastName = userData["last_name"] else {
+                        return
+                    }
+                    UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
+                    
+                case .failure(let error):
+                    print("Failed to read data with error \(error)")
+                }
+            }
+            
             
             UserDefaults.standard.set(email, forKey: "email")
+            
             
             print("Logged In User: \(user)")
             
@@ -242,61 +259,59 @@ extension LoginViewController: LoginButtonDelegate {
             DatabaseManager.shared.userExists(with: email) { exists in
                 if !exists {
                     let duetUser = DuetUser(firstName: firstName, lastName: lastName, emailAddress: email)
-                    DatabaseManager.shared.userExistsInUsers(with: duetUser.safeEmail) { result in
-                        if !result {
-                            DatabaseManager.shared.insertUser(with: duetUser) { success in
-                                if success {
-                                    guard let url = URL(string: pictureUrl) else {
-                                        return
-                                    }
-                                    
-                                    URLSession.shared.dataTask(with: url) { data, _, _ in
-                                        guard let data = data else {
-                                            return
-                                        }
-                                        print("got data from Facebook")
-                                        
-                                        UserDefaults.standard.set(email, forKey: "email")
-                                        
-                                        let fileName = duetUser.profilePictureFileName
-                                        // upload image
-                                        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { result in
-                                            switch result {
-                                            case .success(let downloadUrl):
-                                                UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
-                                                print(downloadUrl)
-                                            case .failure(let error):
-                                                print("Storage manager error: \(error)")
-                                            }
-                                        }
-                                    }.resume()
-                                }
+                    DatabaseManager.shared.insertUser(with: duetUser) { success in
+                        if success {
+                            guard let url = URL(string: pictureUrl) else {
+                                return
                             }
+                            
+                            URLSession.shared.dataTask(with: url) { data, _, _ in
+                                guard let data = data else {
+                                    return
+                                }
+                                
+                                print("got data from Facebook")
+                                
+                                UserDefaults.standard.set(email, forKey: "email")
+                                UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+                                
+                                let fileName = duetUser.profilePictureFileName
+                                // upload image
+                                StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { result in
+                                    switch result {
+                                    case .success(let downloadUrl):
+                                        UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                        print(downloadUrl)
+                                    case .failure(let error):
+                                        print("Storage manager error: \(error)")
+                                    }
+                                }
+                            }.resume()
                         }
                     }
                 }
             }
-            
-            // trade this access token to firebase to get credential
-            let credential = FacebookAuthProvider.credential(withAccessToken: token)
-            print(credential)
-            FirebaseAuth.Auth.auth().signIn(with: credential) { [weak self] authResult, error in
-                guard let strongSelf = self else {
-                    return
-                }
-                guard authResult != nil, error == nil else {
-                    if let error = error {
-                        print("Facebook credential login failed, MFA may be needed - \(error)")
-                    }
-                    return
-                }
-                
-                print("Successfully logged user in")
-                DispatchQueue.main.async {
-                    sleep(2)
-                }
-                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+        }
+        
+        // trade this access token to firebase to get credential
+        let credential = FacebookAuthProvider.credential(withAccessToken: token)
+        print(credential)
+        FirebaseAuth.Auth.auth().signIn(with: credential) { [weak self] authResult, error in
+            guard let strongSelf = self else {
+                return
             }
+            guard authResult != nil, error == nil else {
+                if let error = error {
+                    print("Facebook credential login failed, MFA may be needed - \(error)")
+                }
+                return
+            }
+            
+            print("Successfully logged user in")
+            DispatchQueue.main.async {
+                sleep(2)
+            }
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
 }

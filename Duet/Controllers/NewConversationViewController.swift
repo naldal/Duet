@@ -92,6 +92,7 @@ extension NewConversationViewController: UITableViewDataSource, UITableViewDeleg
         let targetUserData = results[indexPath.row]
         
         dismiss(animated: true, completion: { [weak self] in
+            print(targetUserData)
             self?.completion?(targetUserData)
         })
     }
