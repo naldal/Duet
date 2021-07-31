@@ -13,7 +13,7 @@
 
 
 ## 📱 기능 동작 - 실시간 채팅
-<img width="36%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/chatSend.gif?raw=true"/>|<img width="36%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/chatreceive.gif?raw=true"/>
+<img width="46%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/chatSend.gif?raw=true"/>|<img width="46%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/chatreceive.gif?raw=true"/>
 
 <br>
 
@@ -61,17 +61,17 @@
 
 
 ## 📱 기능 동작 - 페이스북 로그인
-<img width="36%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/facebook%20login.gif?raw=true"/>
+<img width="42%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/facebook%20login.gif?raw=true"/>
 
 <br>
 
 ## 📱 기능 동작 - 회원가입
-<img width="36%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/registerImage.gif?raw=true"/>
+<img width="42%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/registerImage.gif?raw=true"/>
 
 <br>
 
 ## 📱 기능 동작 - 일반 로그인
-<img width="36%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/login.gif?raw=true"/>
+<img width="42%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/login.gif?raw=true"/>
 
 <br>
 
