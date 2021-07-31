@@ -188,11 +188,8 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                     
                 } else {
                     print("failed to send")
-                }
-                
-                
+                }   
             }
-            
         } else {
             guard let conversationId = conversationId,
                   let name = self.title else {
@@ -207,6 +204,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 }
             })
         }
+        inputBar.inputTextView.text = ""
     }
     
     private func createMessageId() -> String? {
