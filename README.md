@@ -4,7 +4,7 @@
 <br>
 
 기간 : 2021.07.13 ~ 07.31 <br>
-개발환경 : Xcode 12.5, GitHub, Cocoapod <br>
+개발환경 : Xcode 12.5, GitHub, CocoaPods <br>
 
 사용 언어 및 기술 : Swift(5.4.2), Storyboard, Data Task, URLSession, NotificationCenter, GCD, Firebase Auth, Firebase Database(real time), Firebase Storage, FBSDKCoreKit, JGProgressHUD, MessageKit, SDWebImage<br>
  
