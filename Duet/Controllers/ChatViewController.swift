@@ -62,7 +62,7 @@ class ChatViewController: MessagesViewController {
     
     //receiver Email
     public var receiver: String
-    private let conversationId: String?
+    private var conversationId: String?
     
     public var isNewConversation = false
     
@@ -89,6 +89,9 @@ class ChatViewController: MessagesViewController {
     private func listenForMessages(id: String, shouldScrollToBottom: Bool) {
         
         DatabaseManager.shared.getAllMessagesForConversation(with: id) { [weak self] result in
+            
+            print("messages are patching...")
+            
             switch result {
             case .success(let messages):
                 guard !messages.isEmpty else {
@@ -96,6 +99,9 @@ class ChatViewController: MessagesViewController {
                     return
                 }
                 self?.messages = messages
+                print(messages)
+                
+                print("message has patched!")
                 
                 DispatchQueue.main.async {
                     self?.messagesCollectionView.reloadDataAndKeepOffset()
@@ -134,6 +140,16 @@ class ChatViewController: MessagesViewController {
 }
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
+    
+    @objc func getConversationIdFromNotificationCenter(notification:Notification) {
+        print(#function, "is called")
+        guard let convoId = notification.userInfo?["conversationId"] as? String else {
+            return
+        }
+        print("now conversation id is \(convoId)")
+        self.conversationId = convoId
+    }
+    
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         guard !text.replacingOccurrences(of: " ", with: "").isEmpty,
               let sender = self.selfSender,
@@ -147,24 +163,42 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                               messageId: messageId,
                               sentDate: Date(),
                               kind: .text(text))
+        
         // Send Message
         if isNewConversation {
             DatabaseManager.shared.createNewConversation(with: receiver, name: self.title ?? "User",
                                                          firstMessage: message) { [weak self] success in
+                
+                guard let strongSelf = self else {
+                    return
+                }
+
+                
                 if success {
                     print("message sent")
-                    self?.isNewConversation = false
+                    strongSelf.isNewConversation = false
+                    
+                    NotificationCenter.default.addObserver(strongSelf, selector: #selector(strongSelf.getConversationIdFromNotificationCenter(notification:)), name: NSNotification.Name("convoIdNotification"), object: nil)
+                    
+                    guard let newlyCreatedConversationId = strongSelf.conversationId else {
+                        print("the observer doesn't get conversation id")
+                        return
+                    }
+                    strongSelf.listenForMessages(id: newlyCreatedConversationId, shouldScrollToBottom: true)
                     
                 } else {
                     print("failed to send")
                 }
+                
+                
             }
+            
         } else {
             guard let conversationId = conversationId,
                   let name = self.title else {
                 return
             }
-            // appen to existing conversation data
+            // append to existing conversation data
             DatabaseManager.shared.sendMessage(to: conversationId, receiverEmail: receiver, name: name, newMessage: message, completion: { success in
                 if success {
                     print("message sent")

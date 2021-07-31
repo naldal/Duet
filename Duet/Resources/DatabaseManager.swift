@@ -124,8 +124,12 @@ extension DatabaseManager {
 
 extension DatabaseManager {
     
+    
+    
     /// Create a new conversation with target user email and first message sent
     public func createNewConversation(with receiver: String, name: String, firstMessage: Message, completion: @escaping (Bool) -> Void) {
+        
+        
         guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String,
               let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
             return
@@ -220,6 +224,7 @@ extension DatabaseManager {
                                                      conversationID: conversationId,
                                                      firstMessage: firstMessage,
                                                      completion: completion)
+                    
                     completion(true)
                 }
             }
@@ -234,23 +239,7 @@ extension DatabaseManager {
         switch firstMessage.kind {
         case .text(let messageText):
             message = messageText
-        case .attributedText(_):
-            break
-        case .photo(_):
-            break
-        case .video(_):
-            break
-        case .location(_):
-            break
-        case .emoji(_):
-            break
-        case .audio(_):
-            break
-        case .contact(_):
-            break
-        case .linkPreview(_):
-            break
-        case .custom(_):
+        default:
             break
         }
         
@@ -278,19 +267,22 @@ extension DatabaseManager {
                 collectionMessage
             ]
         ]
-        print("adding Convo: \(conversationID)")
+        print("adding ConvoID: \(conversationID)")
         database.child("\(conversationID)").setValue(value) { error, _ in
             guard error == nil else {
                 completion(false)
                 return
             }
+            
+            NotificationCenter.default.post(name: NSNotification.Name("convoIdNotification"), object: nil, userInfo: ["conversationId":conversationID])
+            
             completion(true)
         }
     }
     
     /// Fetches and returns all conversations for the user with passed in email
     public func getAllConversations(for email: String, completion: @escaping (Result<[Conversation], Error>) -> Void) {
-        print("email!!: \(email)")
+        
         database.child("\(email)/conversations").observe(.value) { snapshot in
             print("Conversation View is listening...")
             guard let value = snapshot.value as? [[String:Any]] else {
@@ -324,7 +316,9 @@ extension DatabaseManager {
     
     /// Gets all messages for a given conversation
     public func getAllMessagesForConversation(with id: String, completion: @escaping (Result<[Message], Error>) -> Void) {
+        
         print("conversationid :: \(id)")
+        
         database.child("\(id)/messages").observe(.value) { snapshot in
             guard let value = snapshot.value as? [[String:Any]] else {
                 completion(.failure(DatabaseError.failedToFecth))
@@ -371,7 +365,7 @@ extension DatabaseManager {
         }
         
         let currentEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
-        print(currentEmail)
+        print("currentEmail: \(currentEmail)")
         
         database.child("\(conversationId)/messages").observeSingleEvent(of: .value) { [weak self] snapshot in
             guard let strongSelf = self else {
@@ -421,56 +415,55 @@ extension DatabaseManager {
                 }
                 
                 /// note
-                strongSelf.database.child("\(currentEmail)/conversations").observeSingleEvent(of: .value) { convoSnapshot in
-                    guard var latestConversation = snapshot.value as? [[String:Any]] else {
-                        print("Cannot find latest Message in \(currentEmail)")
-                        completion(false)
-                        return
-                    }
-                    ///
-                    let updateValue: [String:Any] = [
-                        "data": dateString,
-                        "message": message,
-                        "is_read": false
-                    ]
-                    var targetConversation:[String:Any]?
-                    var position = 0
-                    
-                    for conversation in latestConversation {
-                        if let currentId = conversation["id"] as? String,
-                           currentId == conversationId {
-                            targetConversation = conversation
-                            break
-                        }
-                        position += 1
-                    }
-                    
-                    targetConversation?["latest_message"] = updateValue
-                    
-                    print("targetConversation?[latest_message] = \(updateValue)")
-                    
-                    guard let finalConversation = targetConversation else {
-                        print("targetConversation is nil")
-                        completion(false)
-                        return
-                    }
-                    latestConversation[position] = finalConversation
-                    print("latestConversation[1] : \(latestConversation[position])")
-                    
-                    strongSelf.database.child("\(currentEmail)/conversations").setValue(latestConversation) { error, _ in
-                        guard error == nil else {
-                            completion(false)
-                            return
-                        }
-                        print("successfully update latestConversation")
-                        completion(true)
-                    }
-                }
+//                strongSelf.database.child("\(currentEmail)/conversations").observeSingleEvent(of: .value) { convoSnapshot in
+//                    guard var latestConversation = snapshot.value as? [[String:Any]] else {
+//                        print("Cannot find latest Message in \(currentEmail)")
+//                        completion(false)
+//                        return
+//                    }
+//                    ///
+//                    let updateValue: [String:Any] = [
+//                        "data": dateString,
+//                        "message": message,
+//                        "is_read": false
+//                    ]
+//                    var targetConversation:[String:Any]?
+//                    var position = 0
+//
+//                    for conversation in latestConversation {
+//                        if let currentId = conversation["id"] as? String,
+//                           currentId == conversationId {
+//                            targetConversation = conversation
+//                            break
+//                        }
+//                        position += 1
+//                    }
+//
+//                    targetConversation?["latest_message"] = updateValue
+//
+//                    print("targetConversation?[latest_message] = \(updateValue)")
+//
+//                    guard let finalConversation = targetConversation else {
+//                        print("targetConversation is nil")
+//                        completion(false)
+//                        return
+//                    }
+//                    latestConversation[position] = finalConversation
+//                    print("latestConversation[1] : \(latestConversation[position])")
+//
+//                    strongSelf.database.child("\(currentEmail)/conversations").setValue(latestConversation) { error, _ in
+//                        guard error == nil else {
+//                            completion(false)
+//                            return
+//                        }
+//                        print("successfully update latestConversation")
+//                        completion(true)
+//                    }
+//                }
                 /// note
             }
         }
     }
-    
 }
 
 struct DuetUser {
