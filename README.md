@@ -1,10 +1,11 @@
 # 💬 Duet 💬
 
-> 실시간 채팅 어플리케이션 개발
+> 회원들 간 실시간 채팅 어플리케이션 개발
 <br>
 
 기간 : 2021.07.13 ~ 07.31 <br>
 개발환경 : Xcode 12.5, GitHub, Cocoapod <br>
+
 사용 언어 및 기술 : Swift(5.4.2), Storyboard, Data Task, URLSession, NotificationCenter, GCD, Firebase Auth, Firebase Database(real time), Firebase Storage, FBSDKCoreKit, JGProgressHUD, MessageKit, SDWebImage<br>
  
 ------------------------------------------------------------------------
@@ -15,6 +16,12 @@
 ## 📱 기능 동작 - 실시간 채팅
 <img width="46%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/chatSend.gif?raw=true"/>|<img width="46%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/chatreceive.gif?raw=true"/>
 
+<br><br>
+
+-------------------
+
+<br>
+<br>
 <br>
 
 ## 📋 프로젝트 상세내용
@@ -58,7 +65,10 @@
   
 ```
 <br>
+<br>
+<br>
 
+-------------------
 
 ## 📱 기능 동작 - 페이스북 로그인
 <img width="42%" src="https://github.com/naldal/readmegifs/blob/master/register,registerImage,facebook%20login/facebook%20login.gif?raw=true"/>
