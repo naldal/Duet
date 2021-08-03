@@ -35,7 +35,7 @@
 ### ⭐ 개발목적
 ```
  
-  * Cocoapod 활용
+  * CocoaPods 활용
 
     - 페이스북 로그인 지원과 MessageKit 활용, JGProgessHUD를 이용한 Activity Indicator View 구현
 
